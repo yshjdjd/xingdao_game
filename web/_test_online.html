@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>联机页 E2E（本地测试用）</title>
+<style>
+  body{font-family:ui-monospace,Consolas,monospace;margin:0;background:#1b1b1b;color:#ddd}
+  #result{position:fixed;left:0;top:0;right:0;height:120px;overflow:auto;background:#000;color:#7f7;
+    padding:8px;font-size:12px;white-space:pre-wrap;z-index:9}
+  #frames{display:flex;gap:6px;padding-top:130px}
+  iframe{width:380px;height:760px;border:1px solid #444;background:#fff}
+</style>
+</head>
+<body>
+<pre id="result">RUNNING</pre>
+<div id="frames"></div>
+<script>
+// 这个页面不属于产品：它开 N 个 iframe 加载真实的 online.html，
+// 用各页面暴露的 __XD_ONLINE__ 钩子把一整场打完，结果写进 #result 供 CDP 读取。
+const N = Number(new URLSearchParams(location.search).get("n") || 2);
+const PER = Number(new URLSearchParams(location.search).get("per") || 1);
+const out = (t) => { document.getElementById("result").textContent = t; };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const frames = [];
+for (let i = 0; i < N; i++) {
+  const f = document.createElement("iframe");
+  f.src = "./online.html";
+  document.getElementById("frames").appendChild(f);
+  frames.push(f);
+}
+
+const win = { lastLen: -1, lastAt: Date.now() };
+const logs = [];
+const log = (...a) => { logs.push(a.join(" ")); out("RUNNING\n" + logs.slice(-6).join("\n")); };
+
+async function ready(f) {
+  for (let i = 0; i < 150; i++) {
+    if (f.contentWindow && f.contentWindow.__XD_ONLINE__) return f.contentWindow.__XD_ONLINE__;
+    await sleep(100);
+  }
+  throw new Error("iframe 未就绪");
+}
+
+function errOf(f) {
+  try { return f.contentDocument.getElementById("errbox").textContent.trim(); } catch { return ""; }
+}
+
+const answerFor = (p) => {
+  if (p.type === "target") return (p.pool || [])[0] ?? null;
+  if (p.type === "targets") return (p.pool || []).slice(0, p.count || 2);
+  if (p.type === "card") return (p.pool || [])[0] ?? null;
+  if (p.type === "allocate") return { attack: 0, heal: 0, defense: p.total || 0 };
+  return (p.options || [])[0] ?? null;
+};
+
+(async () => {
+  try {
+    const fresh = () => frames.map((f) => f.contentWindow.__XD_ONLINE__);
+    let apps = [];
+    for (const f of frames) apps.push(await ready(f));
+    log("页面就绪", apps.length, "个");
+
+    apps[0].send({ t: "create", name: "玩家1", factions: 4, per: 1 });
+    // factions 会被服务端夹到 1–4，这里显式再设一次
+    await sleep(400);
+    apps[0].send({ t: "config", factions: Math.ceil(N / PER), per: PER });
+    await sleep(400);
+    const roomId = apps[0].room();
+    if (!roomId) throw new Error("建房失败");
+    log("房号", roomId);
+
+    for (let i = 1; i < N; i++) {
+      apps[i].join(roomId, "玩家" + (i + 1));
+      await sleep(350);
+    }
+    await sleep(500);
+    log("入座完成");
+
+    apps[0].send({ t: "start" });
+    await sleep(1200);
+    const started = apps.some((a) => (a.state()?.phase || a.state()?.room?.phase) === "choose"
+      || (a.state()?.phase || a.state()?.room?.phase) === "tianji");
+    if (!started) throw new Error("开局未生效，各端状态：" + JSON.stringify(apps.map((a) => a.state()?.room?.phase || a.state()?.phase)));
+
+    let rounds = 0, plays = 0, bids = 0, prompts = 0, discards = 0, guard = 0;
+    let last = "", lastChange = Date.now(), lastPhase = "";
+    while (guard++ < 3000) {
+      apps = fresh();               // 每轮重新取：iframe 若被重载，旧引用会变成"死对象"
+      let done = false;
+      for (let i = 0; i < apps.length; i++) {
+        const s = apps[i].state();
+        if (!s) continue;
+        const phase = s.phase || s.room?.phase;
+        if (phase === "matchOver") { done = true; continue; }
+        if (phase !== last) { last = phase; }
+
+        if (s.t === "view" && s.seat >= 0) {
+          const waiting = s.waiting || [];
+          if (phase === "choose" && waiting.includes(s.seat) && s.view.me?.canAct) {
+            const legal = s.view.me.playable;
+            if (legal.length) {
+              apps[i].play(legal[Math.floor(Math.random() * legal.length)].id);
+              plays++;
+            }
+          } else if (phase === "prompt" && s.prompts?.length && !s.answered) {
+            for (const p of s.prompts) apps[i].send({ t: "answers", answers: { [p.id]: answerFor(p) } });
+            prompts++;
+          } else if (phase === "auction" && waiting.includes(s.seat)) {
+            apps[i].bid(1);
+            bids++;
+          } else if (phase === "tianji" && waiting.includes(s.seat)) {
+            apps[i].send({ t: "tianji", vote: "屏退" });
+          } else if (phase === "discard" && waiting.includes(s.seat)) {
+            const d = s.view.me?.discard;
+            apps[i].send({ t: "discard", ids: (s.view.me.hand || []).slice(0, d ? d.over : 0) });
+            discards++;
+          }
+        }
+      }
+      if (done) break;
+      const cur = apps.map((a) => (a.state()?.phase || a.state()?.room?.phase)).join("|");
+      if (cur !== lastPhase) {
+        lastPhase = cur; lastChange = Date.now();
+        const m0 = (frames[0].contentWindow.__XD_MSGS__ || []).slice(-3).join(" ; ");
+        const rid = apps.map((a) => a.state()?.room?.id || a.state()?.view?.room?.id || "-").join(",");
+        log("阶段", cur, "turn", apps[0].state()?.view?.turn, "room0", rid, "msgs0", m0);
+      }
+      const m0len = (frames[0].contentWindow.__XD_MSGS__ || []).length;
+      if (win.lastLen !== m0len) { win.lastLen = m0len; win.lastAt = Date.now(); }
+      if (Date.now() - win.lastAt > 20000) {
+        throw new Error("frame0 已 20s 无消息 | " + JSON.stringify(frames.map((f) => (f.contentWindow.__XD_MSGS__ || []).slice(-6))) +
+          " | state0=" + JSON.stringify(apps[0].state()?.room || apps[0].state()?.phase));
+      }
+      if (Date.now() - lastChange > 45000) {
+        log("boot:", apps.map((a) => a.boot).join(","), "url:", frames.map((f) => f.contentWindow.location.href.split("#").pop()).join(","));
+        const diag = apps.map((a) => {
+          const s2 = a.state();
+          return {
+            seat: s2?.seat, phase: s2?.phase, turn: s2?.view?.turn,
+            waiting: s2?.waiting, submitted: s2?.submitted,
+            prompts: (s2?.prompts || []).map((p) => p.id + ":" + p.type),
+            answered: s2?.answered, bid: s2?.bid,
+            playable: (s2?.view?.me?.playable || []).length,
+          };
+        });
+        const m0 = frames[0].contentWindow.__XD_MSGS__ || [];
+        throw new Error("卡住了：" + JSON.stringify(diag) + " | frame0 msgs: " + m0.slice(-12).join(" "));
+      }
+      await sleep(120);
+    }
+
+    const s0 = apps[0].state();
+    const errs = frames.map(errOf).filter(Boolean);
+    const res = {
+      ok: (s0.phase || s0.room?.phase) === "matchOver" && !errs.length,
+      phase: s0.phase,
+      round: s0.view?.round,
+      turn: s0.view?.turn,
+      plays, bids, prompts, discards,
+      seats: s0.view?.players.map((p) => `${p.name}:${p.hp}`),
+      errors: errs,
+    };
+    out("DONE " + JSON.stringify(res));
+  } catch (e) {
+    out("DONE " + JSON.stringify({ ok: false, error: String(e && e.message || e), logs: logs.slice(-8) }));
+  }
+})();
+</script>
+</body>
+</html>

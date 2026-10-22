@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f7f3ea">
+<title>行道 · 天机道身世</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">行<em>道</em><small>单机</small></div>
+    <div class="meta">
+      <span>局 <b id="m-round">1</b>/4</span>
+      <span>回合 <b id="m-turn">0</b></span>
+      <span>天机 <b class="tj" id="m-tianji">—</b></span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn only-narrow" id="btn-panel">事件</button>
+    <button class="btn" id="btn-tutorial">教程</button>
+    <a class="btn" id="lnk-online" href="./online.html" style="text-decoration:none">联机版 →</a>
+    <button class="btn" id="btn-restart">重开</button>
+    <button class="btn primary" id="btn-next">开始</button>
+  </header>
+
+  <div class="body">
+    <div class="play">
+      <div class="board" id="board">
+        <div class="zone zone-n" data-side="n"></div>
+        <div class="zone zone-w" data-side="w"></div>
+        <div class="tcenter" data-center></div>
+        <div class="zone zone-e" data-side="e"></div>
+        <div class="zone zone-s" data-side="s"></div>
+      </div>
+      <div class="tray">
+        <div class="row">
+          <div class="lab">术</div>
+          <div class="hand" id="hand-shu"></div>
+        </div>
+        <div class="row" id="row-dao" style="margin-top:5px">
+          <div class="lab">道</div>
+          <div class="hand" id="hand-dao"></div>
+        </div>
+        <div class="row" id="row-talent" style="margin-top:5px;display:none">
+          <div class="lab">天赋</div>
+          <div class="hand" id="hand-talent"></div>
+        </div>
+        <div class="tray-acts" id="tray-actions"></div>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel">
+      <div class="panel-hd">
+        <span class="panel-title">事件记录</span>
+        <span class="panel-vert">事件记录</span>
+        <div class="spacer"></div>
+        <button class="btn" id="panel-toggle" style="padding:2px 8px;font-size:11px">收起</button>
+      </div>
+      <div class="panel-body"></div>
+    </aside>
+  </div>
+</div>
+
+<!-- 手机竖屏：请横过来 -->
+<div class="rotate">
+  <div class="rot-ic">▭</div>
+  <div style="font-size:15px;font-weight:600">请横屏使用</div>
+  <div style="font-size:12px;color:var(--ink3);text-align:center;line-height:1.8">
+    行道是四人围坐的牌桌，横屏才放得下四条边。<br>转过手机即可继续。
+  </div>
+</div>
+
+<pre id="errbox" style="display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:99;
+  background:#7a1f18;color:#ffe9e6;padding:10px 12px;border-radius:8px;font-size:11px;
+  white-space:pre-wrap;max-height:40vh;overflow:auto;margin:0"></pre>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="banner" id="banner"></div>
+
+<script>
+  window.addEventListener("error", function (e) {
+    var box = document.getElementById("errbox");
+    if (!box) return;
+    box.style.display = "block";
+    box.textContent = "脚本错误：" + (e.message || e.type) + "\n" + (e.filename || "") + ":" + (e.lineno || "");
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var box = document.getElementById("errbox");
+    if (!box) return;
+    box.textContent = "未捕获异常：" + ((e.reason && (e.reason.message || e.reason)) || "");
+  });
+</script>
+<script>
+  // 静态托管（*.tcloudbaseapp.com）没有服务端，联机版必须去云托管那个域名。
+  // 同一份 index.html 两个地方都在用，所以按域名判断，而不是写死两份。
+  (function () {
+    var ONLINE = "https://xingdao-332037-11-1500273890.sh.run.tcloudbase.com/online.html";
+    if (/tcloudbaseapp\.com$/.test(location.hostname)) {
+      var a = document.getElementById("lnk-online");
+      if (a) a.href = ONLINE;
+    }
+  })();
+</script>
+<script src="./data.bundle.js"></script>
+<script type="module" src="./app.mjs"></script>
+
+  <!-- 站内教程：iframe 隔离，点「教程」才加载 -->
+  <div class="doc-overlay" id="doc-overlay" aria-hidden="true">
+    <div class="doc-shell">
+      <div class="doc-bar">
+        <span class="doc-title">玩家教程</span>
+        <span class="doc-hint">Esc 或点空白处关闭</span>
+        <button class="btn" id="doc-close">关闭</button>
+      </div>
+      <iframe id="doc-frame" title="玩家教程" src="about:blank"></iframe>
+    </div>
+  </div>
+  <script src="./docview.js"></script>
+</body>
+</html>

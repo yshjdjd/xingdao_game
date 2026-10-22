@@ -1,0 +1,19 @@
+{
+  "name": "xingdao-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "《行道》规则引擎（P0）：数据驱动卡牌 + 事件总线结算 + 自对弈平衡报告",
+  "scripts": {
+    "import": "python tools/import_cards.py",
+    "test": "node test/run.mjs",
+    "sim": "node cli/selfplay.mjs --matches 2000 --players 4",
+    "coverage": "node cli/coverage.mjs",
+    "view": "node cli/view.mjs --turns 9 --seat 0",
+    "sim2v2": "node cli/selfplay.mjs --matches 500 --players 4 --per 2",
+    "serve": "node server/index.mjs",
+    "e2e": "node server/e2e.mjs 4 1",
+    "e2e:web": "node tools/web_e2e.mjs 4 2",
+    "shot": "node tools/shot.mjs"
+  }
+}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行道 · 玩家教程</title>
+<style>
+  :root{
+    --paper:#faf8f3; --paper2:#f3efe6; --ink:#23201c; --ink2:#54504a; --ink3:#7d776d;
+    --line:#ddd6c7; --red:#a5332a; --red-soft:#f6e9e6; --teal:#2f5d62; --teal-soft:#e7efee;
+    --gold:#8a6a2f; --gold-soft:#f6efdd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 32px 110px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:24px}
+  .kicker{font-size:11.5px;letter-spacing:.28em;color:var(--red);font-weight:700;margin-bottom:12px}
+  h1{font-family:"Source Han Serif SC","Songti SC","SimSun",Georgia,serif;font-size:36px;line-height:1.25;margin:0 0 10px;font-weight:700}
+  h1 em{font-style:normal;color:var(--red)}
+  .sub{color:var(--ink2);font-size:14px}
+  .meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12.5px;color:var(--ink3)}
+  .meta b{color:var(--ink2);font-weight:600}
+  h2{font-family:"Source Han Serif SC","Songti SC","SimSun",Georgia,serif;font-size:21px;margin:52px 0 6px;
+    padding-left:12px;border-left:4px solid var(--red);line-height:1.4;font-weight:700}
+  h2 .num{color:var(--red);font-size:14px;margin-right:8px;letter-spacing:.08em;vertical-align:2px}
+  h3{font-size:16px;margin:26px 0 4px}
+  h3::before{content:"◆";color:var(--red);font-size:9px;margin-right:7px;vertical-align:3px}
+  p{margin:9px 0}
+  ul,ol{margin:9px 0;padding-left:21px}
+  li{margin:4px 0}
+  .lead{font-size:14.5px;color:var(--ink2);margin:10px 0 0}
+  code{font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px;background:var(--paper2);
+    padding:1px 5px;border-radius:4px;color:#7a4a2a}
+  pre{background:#2b2723;color:#efe9dd;padding:13px 16px;border-radius:8px;overflow-x:auto;
+    font-size:12.5px;line-height:1.7;margin:12px 0}
+  pre code{background:none;color:inherit;padding:0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;background:#fff}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--paper2);font-weight:600;font-size:12px;color:var(--ink2)}
+  td.k{font-weight:600;white-space:nowrap}
+  .note{background:var(--gold-soft);border:1px solid rgba(138,106,47,.3);border-radius:9px;
+    padding:12px 16px;margin:16px 0;font-size:13.5px;color:var(--ink2)}
+  .note b{color:var(--gold)}
+  .warn{background:var(--red-soft);border-left:3px solid var(--red);border-radius:0 8px 8px 0;
+    padding:11px 15px;margin:14px 0;font-size:13.5px;color:var(--ink2)}
+  .warn b{color:var(--red)}
+  .steps{counter-reset:s;list-style:none;padding-left:0}
+  .steps>li{counter-increment:s;position:relative;padding-left:34px;margin:10px 0}
+  .steps>li::before{content:counter(s);position:absolute;left:0;top:2px;width:22px;height:22px;
+    border-radius:50%;background:var(--red);color:#fff;font-size:12px;font-weight:700;
+    display:flex;align-items:center;justify-content:center}
+  footer{margin-top:64px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--ink3)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}}
+  .box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+  .box h4{margin:0 0 6px;font-size:14px}
+  .box h4::before{content:"◆";color:var(--teal);font-size:8px;margin-right:6px;vertical-align:3px}
+  .box p,.box ul{font-size:13px;margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">玩家教程</div>
+  <h1>行道<em>怎么玩</em></h1>
+  <div class="sub">三十秒看懂规则，十分钟学会怎么不亏血。没有代码、没有术语，只有你真正用得到的判断。</div>
+  <div class="meta"><span><b>人数</b> 2 / 3 / 4 / 6 / 8</span><span><b>一场</b> 4 局</span><span><b>血量</b> 3 / 4 / 5 / 5</span><span><b>一回合</b> 1 张术 + 最多 1 张道牌</span></div>
+</header>
+
+<p class="lead">你手上只有一张牌要打，但你不知道别人打什么 —— 这就是《行道》的全部压力来源。
+下面按"先能玩 → 再玩好"的顺序讲。</p>
+
+<h2><span class="num">01</span>三十秒看懂</h2>
+<div class="two">
+  <div class="box">
+    <h4>你要做的事</h4>
+    <p>每回合<b>暗选 1 张术</b>（偶尔再加 1 张道牌），所有人同时亮牌，比数值。</p>
+    <p><b>活到最后</b>，或者在 4 局结束时积分最高。</p>
+  </div>
+  <div class="box">
+    <h4>三种基本动作</h4>
+    <p><b>蓄力</b>：拿能量，但没有防御，谁都能打中你。</p>
+    <p><b>攻击</b>：数值压过别人的防御才打得中；但攻击时你自己<b>防御是 0</b>。</p>
+    <p><b>防御</b>：不进攻，但阈值高，能挡住大部分攻击。</p>
+  </div>
+</div>
+
+<div class="warn"><b>最容易误解的一条</b>
+攻击数值是"力度"，不是"伤害"。<b>不管数值多高，打中一次只扣 1 血。</b>
+堆数值的意义是"必中"，不是"多扣血"。</div>
+
+<h2><span class="num">02</span>一场比赛怎么算赢</h2>
+<ul>
+  <li><b>一场 = 4 局</b>。第 1 局每人 3 血，第 2 局 4 血，第 3、4 局各 5 血。</li>
+  <li>每局结束时，按<b>势力</b>结算名次与积分：<code>积分 = 势力数 − 名次 + (获胜?2:0) + 击杀数</code>。</li>
+  <li>4 局累加，总积分最高的势力赢。</li>
+  <li>一局的结束条件：只剩一个势力活着，或者打到回合上限。</li>
+</ul>
+
+<h2><span class="num">03</span>一回合怎么走</h2>
+<ol class="steps">
+  <li><b>看天机</b> —— 中央会翻出一张天机牌（平时 20% 触发，终局 30%；连续 5 回合没出则第 6 回合必出）。全场一起受影响，好事坏事都得接着。某些天机需要你当场做选择，会弹窗。</li>
+  <li><b>选一张术</b> —— 从手牌区里挑。能用的亮着，用不了的变灰并写明原因（能量不够 / 被焚毁 / 这回合不能用）。</li>
+  <li><b>可选：带一张道牌</b> —— 每回合最多 1 张，和术一起暗选。神装不算，它是自动装载的。</li>
+  <li><b>同时揭示</b> —— 所有人亮牌。这时你才知道别人打了什么。</li>
+  <li><b>结算</b> —— 先看谁的攻击数值最高（胜者线），再看谁被打中、谁判定失败。</li>
+  <li><b>弃牌</b> —— 手牌超过上限（= 你的血量上限）就要自己挑着弃。</li>
+</ol>
+
+<h2><span class="num">04</span>血是怎么掉的</h2>
+<p>一回合最多掉 1 血（同一次术牌攻击），但有三个来源：</p>
+<table>
+  <thead><tr><th>来源</th><th>什么时候</th><th>扣多少</th></tr></thead>
+  <tbody>
+    <tr><td class="k">被命中</td><td>胜者线的攻击数值 &gt; 你的防御阈值</td><td>1 血</td></tr>
+    <tr><td class="k">判定失败</td><td>你出了攻击，但数值低于胜者线</td><td>1 血（<b>与上一条共用额度</b>，已命中就不再扣）</td></tr>
+    <tr><td class="k">自爆</td><td>你自己选的自爆</td><td>按牌面</td></tr>
+  </tbody>
+</table>
+<div class="note"><b>所以"赌错攻击"的真实代价是</b>：掉 1 血 + 白花掉的能量。
+不会像早期版本那样一次掉 2 血。</div>
+
+<h2><span class="num">05</span>三类牌</h2>
+<h3>术 —— 每回合必须打一张</h3>
+<ul>
+  <li><b>基础术</b>（人人都有）：蓄力 / 各阶攻击 / 各阶防御 / 自爆。</li>
+  <li><b>术系</b>：<b>每局末按存活长短轮流挑</b>（活得越久越先挑），一套里有 3–4 张专用术。每势力最多 3 套。</li>
+  <li><b>自爆第 2 回合起才能用</b>（否则开局就能同归于尽）。</li>
+</ul>
+<h3>道牌 —— 每回合最多一张，改变规则</h3>
+<ul>
+  <li><b>神装</b>：拿到就自动装上，一直在生效（比如攻击 +1、防御 +0.5）。<b>但每件都占你一个手牌位。</b></li>
+  <li><b>神通</b>：打完立刻生效（回血、全场攻击 +3、封掉对面的术…）。</li>
+  <li><b>神策</b>：要另开小博弈（囚徒、狭路相逢），或者改写出牌本身（偷天换日、溯流光）。</li>
+</ul>
+<h3>身世 —— 开场随机抽一张，整场有效</h3>
+<p>6 种身世各有被动：平民可以在第 3 回合起反复把血换成能量（也能换回来）、官宦子弟局初能随机多抽一套术系（可能和别人撞同一套）、杏林能用能量换治疗牌……
+<b>身世是公开的</b>，对面看得到。</p>
+
+<h2><span class="num">06</span>界面怎么看</h2>
+<table>
+  <thead><tr><th>区域</th><th>看什么</th></tr></thead>
+  <tbody>
+    <tr><td class="k">每个人的卡片</td><td>名称 / 势力 / 身世 / <b>血量 · 能量 · 道牌数（大号字）</b> / 拥有的术系</td></tr>
+    <tr><td class="k">卡片旁边的「状态」面板</td><td>这个人当前的动态状态，<b>分行</b>列出：装（神装）/ 术（临时术系）/ 禁（封禁）/ 益（增益）/ 限（限制）……没状态时显示「无」，<b>效果结束那行会自动消失</b></td></tr>
+    <tr><td class="k">中央</td><td>本回合的天机 + 本局在争哪几套术</td></tr>
+    <tr><td class="k">底部手牌区</td><td>术（按蓄力/自爆/攻击/防御分组）· 道牌 · 天赋（只有身世需要主动操作时才出现）</td></tr>
+    <tr><td class="k">右侧事件记录</td><td>每回合谁打了什么、谁掉了多少血、出了什么事</td></tr>
+  </tbody>
+</table>
+<div class="note"><b>暗选期是信息隔离的。</b>你选牌的时候，别人的血量/能量/道牌数<b>不会实时变</b>——
+不然你装卸一件神装，对面就能从数字跳动猜出你要干什么。</div>
+
+<h2><span class="num">07</span>能量：你的弹药</h2>
+<ul>
+  <li>主要来源是<b>蓄力</b>（基础 +1，道牌/天机可以加成）。</li>
+  <li>第 10、15、20… 回合全场<b>补给 +1</b>。</li>
+  <li>第 5、10、15… 回合开头有<b>拍卖</b>，用能量抢道牌。出价窗口 <b>15 秒</b>，超时算弃权（出 0）；拍完会公示 3 秒所有人的出价，然后进右侧事件记录。<b>没拍到的不用付钱。</b></li>
+  <li>击杀别人时，他的能量会被<b>造成过伤害的势力瓜分</b>。</li>
+</ul>
+
+<h2><span class="num">08</span>十条新手建议</h2>
+<ol class="steps">
+  <li><b>别每回合都攻击。</b>攻击时你防御是 0，一旦数值不够就是"挨打 + 白花能量"。</li>
+  <li><b>看胜者线再决定。</b>全场最高攻击值就是那条线，你的攻击必须至少追平它，否则纯亏。</li>
+  <li><b>蓄力要看环境。</b>全场都在攻击时蓄力等于送血；全场都在防御时蓄力最安全。</li>
+  <li><b>防御是保命不是摆烂。</b>普通防御阈值 3，能挡住一阶(1)、二阶(2)、三阶(3)的所有攻击。</li>
+  <li><b>注意"刚好被破"。</b>你的阈值 3 遇上攻击 4 就该换进阶防御（阈值 7）了。</li>
+  <li><b>神装占手牌位。</b>穿满一身，就没地方放功能道牌了。</li>
+  <li><b>道牌一次只带一张。</b>想清楚这回合最需要的是回血、加数值，还是搞对面。</li>
+  <li><b>留意别人卡片下面的「禁」行。</b>谁被焚了术系，一眼就能看到，别等他打不出来才发现。</li>
+  <li><b>血量是资源。</b>2 血时不要出攻击赌运气，1 血时优先回血或死守。</li>
+  <li><b>看别人能量。</b>能量高的人下回合能出高阶攻击，值得提前防御。</li>
+</ol>
+
+<h2><span class="num">09</span>常见疑问</h2>
+<h3>我出了攻击，为什么还掉血？</h3>
+<p>两件事同时发生了：你的攻击数值低于胜者线（判定失败），而且<b>你出攻击时防御是 0</b>，
+所以胜者线的攻击把你打中了。这两笔合并只扣 1 血。</p>
+<h3>我明明出了防御，为什么还被打中？</h3>
+<p>对方的攻击数值<b>大于</b>你的防御阈值。相等算你挡住。</p>
+<h3>为什么我出不了某张术？</h3>
+<p>看它变灰时写的字：能量不够 / 这回合不可用 / 已被焚毁（本局） / 第 2 回合起才可用（自爆）。</p>
+<h3>为什么我打了一张道牌，好像没反应？</h3>
+<p>可能是被对面的「无懈可击」挡了，或者你处在"道牌失效"的天机（返璞归真）之下，
+或者那张道牌需要先选目标而你没选。事件记录里会写。</p>
+<h3>我的队友会看到我的手牌吗？</h3>
+<p>不会。只有「天下大白」生效时，所有人的道牌才会公开一回合。</p>
+
+<div class="note"><b>想再深入一点</b><br>
+游戏内「教程」页有<b>道牌的完整使用场景</b>（每张牌在什么局面值得打、哪些术牌局面会让它翻倍或翻车）；
+如果你是规则设计者或开发者，另有《规则裁决与实现口径》和《开发手册》两份文档。</div>
+
+<footer>行道 · 玩家教程　生成日期 2026-10-22　对应引擎版本 R64</footer>
+</div>
+</body>
+</html>

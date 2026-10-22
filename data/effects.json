@@ -1,0 +1,684 @@
+{
+  "_comment": "效果层：只声明原子与参数，不写逻辑。引擎按 id 取原子；凡出现引擎不支持的原子，该卡自动标为「未接入」并在覆盖率报告里列出。",
+  "sets": {
+    "b1s3": {
+      "atoms": [
+        {
+          "atom": "costDiscount",
+          "filter": {
+            "type": "攻术",
+            "costAtLeast": 4
+          },
+          "factor": 0.5,
+          "excludeSelf": true
+        }
+      ]
+    },
+    "b3s1": {
+      "atoms": []
+    },
+    "b3s2": {
+      "atoms": [
+        {
+          "atom": "lifesteal",
+          "perHit": 0.5
+        }
+      ]
+    },
+    "b3s3": {
+      "atoms": [
+        {
+          "atom": "maxHpDrain",
+          "perHit": 0.5
+        }
+      ]
+    },
+    "b3s4": {
+      "atoms": [
+        {
+          "atom": "extraDamage",
+          "perHit": 0.5
+        }
+      ]
+    }
+  },
+  "cards": {
+    "base_02": {
+      "atoms": [
+        {
+          "atom": "pierceDef"
+        }
+      ]
+    },
+    "b1s4_05": {
+      "atoms": [
+        {
+          "atom": "thresholdInf"
+        }
+      ]
+    },
+    "b2s1_01": {
+      "atoms": [
+        {
+          "atom": "banCard",
+          "target": "enemy",
+          "count": 1,
+          "scope": [
+            "thisTurn",
+            "nextTurn"
+          ]
+        }
+      ]
+    },
+    "b2s1_02": {
+      "atoms": [
+        {
+          "atom": "perHitAtkUp",
+          "perHit": 1
+        }
+      ]
+    },
+    "b2s1_03": {
+      "atoms": [
+        {
+          "atom": "banAllEnemies"
+        }
+      ]
+    },
+    "b2s2_01": {
+      "atoms": [
+        {
+          "atom": "energySteal"
+        }
+      ]
+    },
+    "b2s2_02": {
+      "atoms": [
+        {
+          "atom": "healOnHurt",
+          "healEnergy": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    "b2s2_03": {
+      "atoms": [
+        {
+          "atom": "drainEnergyPerHit",
+          "amount": 1
+        }
+      ]
+    },
+    "b2s3_01": {
+      "atoms": [
+        {
+          "atom": "copyAction"
+        }
+      ]
+    },
+    "b2s3_02": {
+      "atoms": [
+        {
+          "atom": "copyAction"
+        }
+      ]
+    },
+    "b2s3_03": {
+      "atoms": [
+        {
+          "atom": "copyAction"
+        }
+      ]
+    },
+    "b2s4_01": {
+      "atoms": [
+        {
+          "atom": "reflect",
+          "capSource": "atk"
+        }
+      ]
+    },
+    "b2s4_02": {
+      "atoms": [
+        {
+          "atom": "reflect",
+          "capSource": "atk"
+        }
+      ]
+    },
+    "b2s4_03": {
+      "atoms": [
+        {
+          "atom": "reflect",
+          "capSource": "atk"
+        }
+      ]
+    },
+    "b2s4_04": {
+      "atoms": [
+        {
+          "atom": "allocate"
+        }
+      ]
+    },
+    "dao_01": {
+      "atoms": [
+        {
+          "atom": "incomingAtkDown",
+          "amount": 0.5
+        }
+      ]
+    },
+    "dao_02": {
+      "atoms": [
+        {
+          "atom": "atkUp",
+          "amount": 1
+        }
+      ]
+    },
+    "dao_03": {
+      "atoms": [
+        {
+          "atom": "atkMul",
+          "factor": 2
+        }
+      ]
+    },
+    "dao_04": {
+      "atoms": [
+        {
+          "atom": "gainEnergyPerHit",
+          "amount": 1
+        }
+      ]
+    },
+    "dao_05": {
+      "atoms": [
+        {
+          "atom": "reflect",
+          "amount": 0.5
+        }
+      ]
+    },
+    "dao_06": {
+      "atoms": [
+        {
+          "atom": "reviveOnce",
+          "hp": 2
+        }
+      ]
+    },
+    "dao_07": {
+      "atoms": [
+        {
+          "atom": "extraDamage",
+          "perHit": 0.5
+        }
+      ]
+    },
+    "dao_08": {
+      "atoms": [
+        {
+          "atom": "chargeThreshold",
+          "amount": 2
+        }
+      ]
+    },
+    "dao_09": {
+      "atoms": [
+        {
+          "atom": "healPerHit",
+          "amount": 0.5
+        }
+      ]
+    },
+    "dao_10": {
+      "atoms": [
+        {
+          "atom": "setAllHpOne"
+        }
+      ]
+    },
+    "dao_11": {
+      "atoms": [
+        {
+          "atom": "link"
+        }
+      ]
+    },
+    "dao_12": {
+      "atoms": [
+        {
+          "atom": "subGame",
+          "kind": "prisoner"
+        }
+      ]
+    },
+    "dao_13": {
+      "atoms": [
+        {
+          "atom": "forceAttack"
+        }
+      ]
+    },
+    "dao_14": {
+      "atoms": [
+        {
+          "atom": "tallPoppy"
+        }
+      ]
+    },
+    "dao_15": {
+      "atoms": [
+        {
+          "atom": "lockSpirit"
+        }
+      ]
+    },
+    "dao_16": {
+      "atoms": [
+        {
+          "atom": "soulSwap"
+        }
+      ]
+    },
+    "dao_17": {
+      "atoms": [
+        {
+          "atom": "subGame",
+          "kind": "chicken"
+        }
+      ]
+    },
+    "dao_18": {
+      "atoms": [
+        {
+          "atom": "swapActions"
+        }
+      ]
+    },
+    "dao_19": {
+      "atoms": [
+        {
+          "atom": "subGame",
+          "kind": "harvest"
+        }
+      ]
+    },
+    "dao_20": {
+      "atoms": [
+        {
+          "atom": "revealHands"
+        }
+      ]
+    },
+    "dao_21": {
+      "atoms": [
+        {
+          "atom": "healTarget",
+          "amount": 2
+        }
+      ]
+    },
+    "dao_22": {
+      "atoms": [
+        {
+          "atom": "atkBuff",
+          "add": 3,
+          "turns": 1
+        }
+      ]
+    },
+    "dao_23": {
+      "atoms": [
+        {
+          "atom": "atkMulSelf",
+          "factor": 2
+        }
+      ]
+    },
+    "dao_24": {
+      "atoms": [
+        {
+          "atom": "chargeMul",
+          "factor": 3
+        }
+      ]
+    },
+    "dao_25": {
+      "atoms": [
+        {
+          "atom": "loseHpGainEnergy",
+          "loseHp": 1,
+          "gainEnergy": 3
+        }
+      ]
+    },
+    "dao_26": {
+      "atoms": [
+        {
+          "atom": "redirect"
+        }
+      ]
+    },
+    "dao_27": {
+      "atoms": [
+        {
+          "atom": "stealCard"
+        }
+      ]
+    },
+    "dao_28": {
+      "atoms": [
+        {
+          "atom": "banSet"
+        }
+      ]
+    },
+    "dao_29": {
+      "atoms": [
+        {
+          "atom": "revive"
+        }
+      ]
+    },
+    "dao_30": {
+      "atoms": [
+        {
+          "atom": "tianjiNow"
+        }
+      ]
+    },
+    "dao_31": {
+      "atoms": [
+        {
+          "atom": "negate"
+        }
+      ]
+    },
+    "tj_01": {
+      "atoms": [
+        {
+          "atom": "energyAll",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_02": {
+      "atoms": [
+        {
+          "atom": "healAll",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_03": {
+      "atoms": [
+        {
+          "atom": "energyAllDown",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_04": {
+      "atoms": [
+        {
+          "atom": "atkBuff",
+          "add": 2,
+          "turns": 2
+        }
+      ]
+    },
+    "tj_05": {
+      "atoms": [
+        {
+          "atom": "defBuff",
+          "add": 3
+        }
+      ]
+    },
+    "tj_06": {
+      "atoms": [
+        {
+          "atom": "noDamage"
+        }
+      ]
+    },
+    "tj_07": {
+      "atoms": [
+        {
+          "atom": "drawDao",
+          "amount": 1,
+          "scope": "all"
+        }
+      ]
+    },
+    "tj_08": {
+      "atoms": [
+        {
+          "atom": "punishTopEnergy",
+          "amount": 2
+        }
+      ]
+    },
+    "tj_09": {
+      "atoms": [
+        {
+          "atom": "damageLowest",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_10": {
+      "atoms": [
+        {
+          "atom": "chargeBonus",
+          "add": 1
+        }
+      ]
+    },
+    "tj_11": {
+      "atoms": [
+        {
+          "atom": "onlyBasic"
+        }
+      ]
+    },
+    "tj_12": {
+      "atoms": [
+        {
+          "atom": "healLowest",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_13": {
+      "atoms": [
+        {
+          "atom": "costMulAll",
+          "factor": 2,
+          "turns": 2
+        }
+      ]
+    },
+    "tj_14": {
+      "atoms": [
+        {
+          "atom": "drawDao",
+          "amount": 1,
+          "scope": "alive"
+        }
+      ]
+    },
+    "tj_15": {
+      "atoms": [
+        {
+          "atom": "drawDao",
+          "amount": -1,
+          "scope": "alive"
+        }
+      ]
+    },
+    "tj_16": {
+      "atoms": [
+        {
+          "atom": "atkMulAll",
+          "factor": 2
+        }
+      ]
+    },
+    "tj_17": {
+      "atoms": [
+        {
+          "atom": "energyRegroup"
+        }
+      ]
+    },
+    "tj_18": {
+      "atoms": [
+        {
+          "atom": "reviveLast"
+        }
+      ]
+    },
+    "tj_19": {
+      "atoms": [
+        {
+          "atom": "damageAll",
+          "amount": 1
+        }
+      ]
+    },
+    "tj_20": {
+      "atoms": [
+        {
+          "atom": "equipDisabled",
+          "turns": 3
+        }
+      ]
+    },
+    "tj_21": {
+      "atoms": [
+        {
+          "atom": "subGame",
+          "kind": "bet"
+        }
+      ]
+    },
+    "tj_22": {
+      "atoms": [
+        {
+          "atom": "swapHpEnergy"
+        }
+      ]
+    },
+    "tj_23": {
+      "atoms": [
+        {
+          "atom": "credit"
+        }
+      ]
+    },
+    "tj_24": {
+      "atoms": [
+        {
+          "atom": "banLastTurnCards"
+        }
+      ]
+    },
+    "base_12": {
+      "atoms": [
+        {
+          "atom": "defPierceable"
+        }
+      ]
+    },
+    "dao_32": {
+      "atoms": [
+        {
+          "atom": "tianjiGraft"
+        }
+      ]
+    },
+    "dao_33": {
+      "atoms": [
+        {
+          "atom": "replay"
+        }
+      ]
+    }
+  },
+  "birth": {
+    "birth_01": {
+      "atoms": [
+        {
+          "atom": "chargeBonus",
+          "add": 1,
+          "afterCharges": 5
+        }
+      ]
+    },
+    "birth_02": {
+      "atoms": [
+        {
+          "atom": "extraHp",
+          "amount": 1
+        },
+        {
+          "atom": "explodeSurvive",
+          "hp": 0.5
+        }
+      ]
+    },
+    "birth_03": {
+      "atoms": [
+        {
+          "atom": "tempSet"
+        }
+      ]
+    },
+    "birth_04": {
+      "atoms": [
+        {
+          "atom": "craft"
+        }
+      ]
+    },
+    "birth_05": {
+      "atoms": [
+        {
+          "atom": "buyHeal"
+        }
+      ]
+    },
+    "birth_06": {
+      "atoms": [
+        {
+          "atom": "convert"
+        }
+      ]
+    }
+  },
+  "synthetic": [
+    {
+      "id": "synth_heal",
+      "name": "杏林方",
+      "type": "御术",
+      "cost": 0,
+      "def": 0,
+      "text": "回复 1 点血（可对任何人使用），由杏林世家以 2 能量换取",
+      "atoms": [
+        {
+          "atom": "healTarget",
+          "amount": 1
+        }
+      ],
+      "order": 2.05,
+      "category": "神通牌",
+      "note": "档 ② 2.05：改血量，排在回春(2.1)之前"
+    }
+  ]
+}

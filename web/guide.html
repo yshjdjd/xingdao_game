@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《行道》新手教程 · 十分钟学会怎么玩</title>
+<style>
+  :root{
+    --paper:#faf8f3; --paper2:#f3efe6; --ink:#23201c; --ink2:#54504a; --ink3:#7d776d;
+    --line:#ddd6c7; --red:#a5332a; --red-soft:#f6e9e6; --teal:#2f5d62; --teal-soft:#e7efee;
+    --gold:#8a6a2f; --gold-soft:#f6efdd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:60px 34px 110px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:26px}
+  .kicker{font-size:11.5px;letter-spacing:.28em;color:var(--red);font-weight:700;margin-bottom:14px}
+  h1{font-family:"Source Han Serif SC","Songti SC","SimSun",Georgia,serif;font-size:37px;line-height:1.25;margin:0 0 10px;font-weight:700}
+  h1 em{font-style:normal;color:var(--red)}
+  .sub{color:var(--ink2);font-size:14px}
+  .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 24px;font-size:12.5px;color:var(--ink3)}
+  .meta b{color:var(--ink2);font-weight:600}
+
+  h2{font-family:"Source Han Serif SC","Songti SC","SimSun",Georgia,serif;font-size:22px;margin:52px 0 4px;
+    padding-left:13px;border-left:4px solid var(--red);line-height:1.4;font-weight:700}
+  h2 .num{color:var(--red);font-size:14px;margin-right:8px;letter-spacing:.1em;vertical-align:2px}
+  h3{font-size:16px;margin:28px 0 6px}
+  h3::before{content:"◆";color:var(--red);font-size:9px;margin-right:8px;vertical-align:3px}
+  p{margin:9px 0}
+  ul,ol{margin:9px 0;padding-left:21px}
+  li{margin:4px 0}
+  .lead{font-size:15.5px;color:var(--ink2);margin:14px 0 0}
+  .cm{color:var(--ink3)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;background:#fff}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--paper2);font-weight:600;font-size:12px;color:var(--ink2)}
+  tr.hl td{background:var(--red-soft)}
+  tr.ok td{background:var(--teal-soft)}
+  .num-c{font-family:"JetBrains Mono",Consolas,monospace;font-weight:700;text-align:center}
+  .tag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:3px;line-height:1.7;white-space:nowrap;font-weight:600}
+  .tag.new{background:var(--red);color:#fff}
+  .tag.fix{background:var(--gold-soft);color:var(--gold);border:1px solid #e3d3ac}
+  .tag.teal{background:var(--teal);color:#fff}
+  .tag.grey{background:var(--paper2);color:var(--ink3);border:1px solid var(--line)}
+
+  blockquote{margin:16px 0;padding:14px 18px;background:var(--teal-soft);border-left:4px solid var(--teal);
+    font-size:13.5px;color:#1f3d40;border-radius:0 4px 4px 0}
+  .warnbox{margin:16px 0;padding:14px 18px;background:var(--red-soft);border-left:4px solid var(--red);border-radius:0 4px 4px 0;font-size:13.5px}
+  .tipbox{margin:16px 0;padding:14px 18px;background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:0 4px 4px 0;font-size:13.5px}
+  code{font-family:"JetBrains Mono",Consolas,monospace;font-size:12px;background:var(--paper2);padding:1px 5px;border-radius:3px;border:1px solid var(--line)}
+
+  /* 回合管线 */
+  .pipe{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:14px 0}
+  .st{background:#fff;border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:3px;
+    padding:7px 11px;font-size:12px;line-height:1.45;text-align:center;flex:1 1 86px}
+  .st b{display:block;font-size:12.5px;color:var(--teal)}
+  .st.x{border-top-color:var(--red)}
+  .st.x b{color:var(--red)}
+  .ar{color:var(--ink3);font-size:12px}
+
+  /* 示例回合 */
+  .demo{border:1px solid var(--line);border-radius:6px;background:#fff;margin:16px 0;overflow:hidden}
+  .demo-hd{background:var(--paper2);padding:8px 14px;font-size:12.5px;color:var(--ink2);border-bottom:1px solid var(--line)}
+  .demo-hd b{color:var(--ink)}
+  table.demo-tb{margin:0;border:0;font-size:12.5px}
+  table.demo-tb td,table.demo-tb th{border:0;border-bottom:1px solid var(--line)}
+  table.demo-tb tr:last-child td{border-bottom:0}
+  .demo-out{padding:10px 14px;font-size:12.5px;background:var(--paper);color:var(--ink2);border-top:1px solid var(--line)}
+  .demo-out b{color:var(--red)}
+
+  /* 速查卡 */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(198px,1fr));gap:10px;margin:14px 0}
+  .card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:10px 12px;border-top:3px solid var(--gold)}
+  .card.atk{border-top-color:var(--red)}
+  .card.def{border-top-color:var(--teal)}
+  .card.bomb{border-top-color:var(--ink)}
+  .card .cn{font-weight:700;font-size:14px}
+  .card .cv{font-family:"JetBrains Mono",Consolas,monospace;font-size:11px;color:var(--ink3);margin:2px 0 5px}
+  .card .cd{font-size:12px;color:var(--ink2);line-height:1.6}
+
+  footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);line-height:1.9}
+
+  @media (max-width:720px){
+    .wrap{padding:34px 18px 70px}
+    h1{font-size:27px}
+    h2{font-size:19px}
+    .pipe{gap:4px}
+    .st{flex:1 1 72px;padding:5px 7px;font-size:11px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">XINGDAO · PLAYER GUIDE</div>
+  <h1>《行道》<em>新手教程</em></h1>
+  <div class="sub">十分钟看懂：你在干什么、一回合怎么走、血是怎么掉的、分是怎么算的。</div>
+  <div class="meta">
+    <span>适用版本 <b>v1.3 + R01–R35</b></span>
+    <span>人数 <b>2 / 3 / 4 / 6 / 8</b></span>
+    <span>一场 <b>4 局</b></span>
+    <span>阅读时间 <b>约 10 分钟</b></span>
+  </div>
+</header>
+
+<h2><span class="num">00</span>先记住这四句话</h2>
+<p class="lead">《行道》的全部策略都长在这四条上。看懂它们，剩下的都是细节。</p>
+<ol>
+  <li><b>全场同时暗选，同时揭示。</b>你出牌时不知道别人出什么，所以每一手都是在猜。</li>
+  <li><b>攻击数值只决定"打不打得中"，命中只扣 1 点血。</b>用 14 阶打死你和用 2 阶打死你，掉的血一样多——贵的攻击不是为了多扣血，是为了<b>保证命中</b>。</li>
+  <li><b>攻击是全场范围的，不分方向。</b>你砍出去的刀会落到所有挡不住的人头上，包括你的敌人、也包括没防的旁观者。</li>
+  <li><b>能量就是命。</b>没有能量就出不了术，出不了术就只能白挨打。蓄力是唯一稳定的收入。</li>
+</ol>
+<div class="tipbox">
+<b>如果你只玩一局：</b>目标就是<b>活到最后</b>。活到最后的人拿名次分、拿道牌、优先挑术集。一切花招都服务于"比别人活得久"。
+</div>
+
+<h2><span class="num">01</span>你要干什么：胜负与积分</h2>
+
+<h3>一场 = 4 局</h3>
+<table>
+  <thead><tr><th style="width:110px">局</th><th style="width:88px">血量上限</th><th style="width:110px">道牌上限</th><th>定位</th></tr></thead>
+  <tbody>
+    <tr><td>第 1 局</td><td class="num-c">3</td><td class="num-c">3</td><td><b>重注局</b>：全场只有基础术，数值差异小，3 点血意味着<b>挨 3 下就死</b>。靠判断力决胜。</td></tr>
+    <tr><td>第 2 局</td><td class="num-c">4</td><td class="num-c">4</td><td>开始出现封印 / 复制 / 反弹类术，多一次容错。</td></tr>
+    <tr><td>第 3 局</td><td class="num-c">5</td><td class="num-c">5</td><td>12 套术全开、道牌流通、装备流成形。</td></tr>
+    <tr class="hl"><td>第 4 局 · 终局</td><td class="num-c">5</td><td class="num-c">5</td><td>同上，但<b>本局积分 ×2</b>——翻盘局。</td></tr>
+  </tbody>
+</table>
+<p class="cm">每局开始时血量、能量、手牌全部重置（术集和总分带走）。所以第 1 局早死不等于整场报废。</p>
+
+<h3>一局怎么结束</h3>
+<p>打到<b>只剩一个势力还有活人</b>，那局就结束。若一直僵持，第 <b>25 回合</b>起每回合全场 −1 血，强制收敛。</p>
+
+<h3>积分怎么算</h3>
+<p>局末按<b>势力</b>排名（存活优先，其次存活回合数，都相同则随机），每势力的得分：</p>
+<pre>本局得分 = 势力数 − 名次 + (第一名 ? 2 : 0) + 本局击杀数
+终局再 ×2</pre>
+<ul>
+  <li>第一名额外拿道牌：<b>+1 张</b>（终局 <b>+2 张</b>），发给该势力每名<b>存活</b>成员。</li>
+  <li>术集在局末<b>按存活长短轮流挑</b>：<b>活得越久越先挑</b>（滚雪球），死得早的排后面；
+      存活时长相同的势力之间随机决定先后。每势力挑 1 套（见第 09 节）。</li>
+</ul>
+<blockquote>
+<b>所以「苟」是有收益的，而且是三重收益。</b>名次分第一名 +2、活得更久多拿一张道牌，
+<b>术集也是活得越久越先挑</b>——分数、道牌、火力全都在奖励"活下来"。但击杀也有分，
+而且你淘汰的人身上的能量会被瓜分。<b>苟与杀的平衡，就是这游戏的核心张力。</b>
+</blockquote>
+
+<h2><span class="num">02</span>桌面上的东西</h2>
+<p>Web 版把玩家按<b>势力</b>分到牌桌四周：你在<b>下方（南）</b>，同势力的人挨着你坐。1v1 正对、2v2 正对、2v2v2v2 各占一边、1v1v1 会空出一侧。</p>
+<table>
+  <thead><tr><th style="width:130px">区域</th><th>是什么</th></tr></thead>
+  <tbody>
+    <tr><td><b>座位卡</b></td><td>每个人的头像、血量条、能量、道牌数、<b>身世</b>、<b>已夺到的术集</b>、装备。<span class="tag teal">公开</span>术集和装备是明牌，对手能看到。</td></tr>
+    <tr><td><b>出牌槽</b></td><td>座位卡前方，本回合打出的牌会在这里展示几秒（像斗地主的出牌区）。</td></tr>
+    <tr><td><b>中央天机坛</b></td><td>本回合的天机名称与效果；有遗留的持续效果也会列在下面。点天机卡可以看全文。</td></tr>
+    <tr><td><b>底部手牌区</b></td><td>你的术，按<b>术系</b>折叠（蓄力 / 攻击 / 防御 / 自爆 + 每个术集一组）。点组名展开或收起，再点具体的术选中。</td></tr>
+    <tr><td><b>右侧事件表</b></td><td>逐回合记录：天机、谁出了什么、所有人的血量/能量变化。点右上角折叠，主画面会自动变宽。</td></tr>
+  </tbody>
+</table>
+<div class="tipbox">
+<b>看牌详情：</b>电脑上<b>鼠标悬浮</b>任意牌/标签即可；手机上<b>长按</b>。想看天机全文、身世说明、术集内容，点一下会弹窗。
+</div>
+
+<h2><span class="num">03</span>三类牌：术 · 道牌 · 身世</h2>
+
+<h3>术（每回合暗选 1 张打出）</h3>
+<p>术是每回合真正打出去的东西，分四类。开局<b>全场只有 13 张基础术</b>，术集要一局一局去挣。</p>
+<div class="cards">
+  <div class="card"><div class="cn">蓄力</div><div class="cv">耗能 0</div><div class="cd">+1 能量。但<b>本回合被命中就拿不到</b>。是全场唯一的稳定收入，也是最大的破绽（阈值视为 0）。</div></div>
+  <div class="card atk"><div class="cn">攻术</div><div class="cv">耗能 1–30</div><div class="cd">数值用于拼胜者线。<b>命中只扣 1 点血</b>，跟数值大小无关。</div></div>
+  <div class="card def"><div class="cn">御术</div><div class="cv">耗能 0–1</div><div class="cd">给自己一个<b>阈值</b>。攻击数值 ≤ 阈值 → 挡住；&gt; 阈值 → 被破。</div></div>
+  <div class="card bomb"><div class="cn">自爆</div><div class="cv">耗能 0</div><div class="cd">第 2 回合起可用。数值 = 你<b>当前血量</b>，且<b>按数值扣血</b>（全作唯一例外）。你自己立即淘汰。</div></div>
+</div>
+
+<table>
+  <thead><tr><th style="width:110px">基础术</th><th style="width:70px">耗能</th><th style="width:80px">数值</th><th>要点</th></tr></thead>
+  <tbody>
+    <tr><td>蓄力</td><td class="num-c">0</td><td class="num-c">—</td><td>被命中则本回合白蓄</td></tr>
+    <tr class="hl"><td>一阶普攻</td><td class="num-c">1</td><td class="num-c">1</td><td><b>全场唯一能击破「超阶防御」和「山海有灵」的攻击</b>。但 1 点会被普通防御（3）轻松挡住。</td></tr>
+    <tr><td>二阶 / 四阶 / 八阶</td><td class="num-c">2 / 4 / 8</td><td class="num-c">2 / 4 / 8</td><td>主力档。四阶、八阶、十二阶持【兵将】时耗能减半。</td></tr>
+    <tr><td>十阶 / 十二阶 / 十四阶</td><td class="num-c">10 / 12 / 14</td><td class="num-c">10 / 12 / 14</td><td>除非你有能量优势，否则性价比很差。</td></tr>
+    <tr><td>极阶攻击</td><td class="num-c">30</td><td class="num-c">高于全场最高阈值</td><td>理论无解，但 30 能量基本是幻想。</td></tr>
+    <tr class="ok"><td>普通防御</td><td class="num-c">0</td><td class="num-c">阈值 3</td><td><b>免费保底</b>。没能量时它是你的默认选择，超时也会自动出它。</td></tr>
+    <tr class="ok"><td>进阶防御</td><td class="num-c">1</td><td class="num-c">阈值 7</td><td>挡住绝大多数常规攻击；不被一阶普攻克制。</td></tr>
+    <tr class="ok"><td>超阶防御</td><td class="num-c">1</td><td class="num-c">阈值 12</td><td>几乎无敌，但<b>会被一阶普攻击破</b>。这就是 1 点攻击存在的意义。</td></tr>
+  </tbody>
+</table>
+<div class="warnbox">
+<b>阈值是"严格大于才算破"。</b>数值 3 打阈值 3 → <b>挡住</b>；数值 4 打阈值 3 → <b>破</b>。装备「太虚护心镜」给你的<b>防御数值 +0.5</b>，就是为了把"刚好被打中"的那一刀卡成挡住——这是全作最精细的操作。
+</div>
+
+<h3>道牌（资源与装备）</h3>
+<p>33 种 / 60 张，分三类，靠局末奖励、拍卖、击杀瓜分等方式入手。每回合<b>最多同时打出 1 张</b>（和你的术一起暗选）。</p>
+<ul>
+  <li><b>神装牌</b>：<b>拿到手就自动装载、立即生效</b>。例如「太虚护心镜」（<b>防御数值 +0.5</b>）、「赤霄剑」（你的攻击 +1）、「罡风靴」（你的攻击翻倍）、「逆鳞金甲」（受伤反伤 0.5）。</li>
+  <li><b>神通牌</b>：即时生效。例如「回春」（回 2 血）、「引雷」（全场攻击 +3）、「终焉之奏」（全场血量变 1）。</li>
+  <li><b>神策牌</b>：要另开博弈画面或改写出牌本身。例如「囚徒」「狭路相逢」「偷天换日」「溯流光」。</li>
+</ul>
+<h3>术系是明牌，封禁也写在脸上（R59）</h3>
+<ul>
+  <li><b>所有术系一律公开</b>（基础术除外）。包括官宦子弟局初临时借来的那一套——它在座位卡的术系行里带一个 <code>*</code>，状态栏还会单独标一条「临时术系·X」。<b>没有"藏着掖着的术系"。</b></li>
+  <li><b>「焚术」怎么用</b>：先选一名敌方玩家，再看他<b>本回合打出的那张术</b>——</li>
+  <ul>
+    <li>他出的是<b>基础术</b>（三阶攻击、<b>蓄力</b>、<b>普通防御</b>……都算）→ <b>封掉这一张牌本身</b>。其余阶攻击照常能打，但被烧掉的这一张<b>本局全场都不能再用</b>——基础术是公共牌，烧了就烧了。</li>
+    <li>他出的是<b>术系里的术</b> → <b>整整套术系被封</b>，本局后续回合都不能再用。</li>
+  </ul>
+  <li><b>封禁不等于没收</b>：术系还记在他名下（明牌），只是状态栏会标一条红色的「封禁·X」并划掉——所有人都能看到他被废了哪一块。</li>
+</ul>
+
+<h3>座位卡下面的「状态」面板</h3>
+<p>每张座位卡旁边都有一块<b>独立的状态面板</b>：<b>东西两侧的玩家挂在卡片下方</b>，
+<b>南北两排的玩家挂在卡片左右</b>（和卡片同一水平线，不额外占一条横向高度）。
+标题写着「状态」和条数，没状态时显示「无」——这样你扫一眼就知道谁身上干净、谁挂了东西。
+状态行前面有一个小字标签：<b>装</b>（神装）/ <b>术</b>（临时术系）/ <b>禁</b>（封禁）/ <b>益</b>（增益）/ <b>限</b>（限制）/ <b>示</b>（公示中）。
+效果一结束就自动消失：</p>
+<ul>
+  <li><b>神装</b>（金色「装」）：已装载的装备名，点开看效果。</li>
+  <li><b>封禁</b>（红色「禁」）：被焚术封掉的术系 / 基础术，或被「失落的历史」封掉的上回合术牌。</li>
+  <li><b>临时术系</b>（土黄「术」）：官宦子弟抽来的那一套。</li>
+  <li><b>减益 / 限制</b>：装备失效（天命改易）、能耗 ×2（天灾）、仅可用基础术、被逼战、下回合术牌被封。</li>
+  <li><b>增益 / 庇护</b>：不扣血庇护（天下太平）、道牌公示（天下大白）、攻击 / 防御 / 蓄力加成、道牌免疫。</li>
+</ul>
+<p class="cm">「天下大白」生效期间，座位卡会直接把那个人的道牌列出来——这是全场唯一能看见别人手牌的窗口。</p>
+
+<h3>神装怎么穿怎么脱（R55）</h3>
+<ul>
+  <li><b>获取即自动装载</b>——不用额外动作，到手就生效。</li>
+  <li><b>可以穿很多件</b>，没有"2 个槽"的限制。</li>
+  <li><b>但每件都计入道牌持有上限</b>（= 血量上限）。穿得越多，能带的神通 / 神策就越少——这是神装的真正代价。</li>
+  <li><b>卸下只能在出牌阶段做</b>，卸下<b>不消耗</b>本回合的道牌名额。</li>
+  <li><b>在出牌阶段装载，则要消耗本回合的道牌使用名额</b>（等于本回合已经出过道牌了）。</li>
+</ul>
+<p class="cm">手牌上限 = <b>血量上限</b>，即第 1 局 3 张、第 3 局起 5 张。超了不会凭空消失——回合结束会进弃牌判断期，<b>由你自己挑要弃哪几张</b>。<b>弃置发生在回合最末尾，是"这回合结束了"的标志。</b></p>
+
+<h3>身世（开场随机抽取，全程有效）</h3>
+<p><b>6 种</b>，开场有<b>抽身世动画</b>，每人从这 6 种里随机拿到 1 种（<b>可以重复</b>，多人同一种是合法的）。
+它决定你这整场的打法基调，且往往带来<b>额外的操作时机</b>：
+<table>
+  <thead><tr><th style="width:120px">身世</th><th>效果要点</th></tr></thead>
+  <tbody>
+    <tr><td>商贾之家</td><td>从第 5 次蓄力起，蓄力效率 +1。<span class="tag grey">长线积累</span></td></tr>
+    <tr><td>武林世家</td><td>血量上限 +1。</td></tr>
+    <tr><td>官宦子弟</td><td><b>第一 / 二 / 三局「开局」各一次</b>：<b>同时随机抽取</b>本局争夺中的一个术系临时使用，不受 3 套上限约束。
+<b>纯随机、互不排斥</b>——两个官宦子弟可能抽到同一套。抽完会公示 3 秒，让所有人看到谁拿到了哪套。</td></tr>
+    <tr><td>匠作之家</td><td>选中术牌、未确认前可 <b>+N 或 −N</b>：付 N 能量加 N 数值，或降 N 数值换回 N 能量。超阶防御可再花 1 能量补掉"被普攻克"的缺点。</td></tr>
+    <tr><td>杏林世家</td><td>出牌阶段可付 2 能量换一张治疗牌（回 1 血，可对任何人）。</td></tr>
+    <tr><td>平民子弟</td><td><b>第 3 回合起</b>可在出牌阶段做 <b>1 血 ↔ 2 能量</b> 的即时兑换：
+      <b>点一次立刻生效一次</b>，可反复点、来回换，血量不会低于 1 点。换完要重新选牌。
+      <span class="cm">前两回合锁着——那时候大家都没能量，能换血等于白送 2 点启动资金。</span></td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">04</span>一回合怎么走</h2>
+<div class="pipe">
+  <div class="st"><b>① 补给</b>第 10/15/20… 回合</div><div class="ar">›</div>
+  <div class="st"><b>② 拍卖</b>第 5/10/15… 回合开始时最先进行</div><div class="ar">›</div>
+  <div class="st x"><b>③ 天机判定</b>前三局 20% / 终局 30%</div><div class="ar">›</div>
+  <div class="st x"><b>④ 天机执行</b>先问窥天嫁接</div><div class="ar">›</div>
+  <div class="st x"><b>⑤ 决策</b>暗选 ≥1 术 + ≤1 道牌</div><div class="ar">›</div>
+  <div class="st x"><b>⑥ 揭示</b>同时公开</div><div class="ar">›</div>
+  <div class="st x"><b>⑦ 结算</b>道牌按六档梯队走</div><div class="ar">›</div>
+  <div class="st"><b>⑧ 淘汰</b>瓜分能量</div><div class="ar">›</div>
+  <div class="st"><b>⑨ 弃牌判断</b>手牌超上限才出现</div>
+</div>
+<p class="cm">红色四段是全部戏剧性的所在：你不知道别人出什么，然后同时亮牌，然后一起算账。
+<b>开场</b>还有一段抽身世动画，<b>每局开局</b>官宦子弟会<b>同时随机抽</b>一次临时术系（公示 3 秒）——这两段只在局初走一次，不在上面的回合循环里。</p>
+
+<h3>决策阶段你能做什么</h3>
+<ol>
+  <li><b>选 1 张术</b>——从基础术 + 你势力拥有的术集里挑（手牌区按术系折叠，点组名展开）。</li>
+  <li><b>可选再带 1 张道牌</b>——从手牌里选。</li>
+  <li><b>身世操作</b>——<b>和道牌挤在同一行</b>（「天赋 · 身世名 ? [按钮]」），不再单独占一行。
+      想读天赋全文点那个 <b>?</b>。<b>点一次按钮就立刻生效一次</b>，可以反复点（平民的血能兑换就是来回换）。
+      <b>每次操作都会清掉你已经选好的术</b>，逼你用新的血/能重新选——否则会出现"选好 4 费的牌、
+      再把能量换成血，结果付不起"的错位。</li>
+  <li><b>确认</b>。确认后不可更改，所有人揭示后一起结算。</li>
+</ol>
+<p>有倒计时的：决策 45 秒，超时<b>自动出「普通防御」</b>。能量不足时也一样——没能量可用的人只能出免费防御。</p>
+
+<h3>结算顺序（道牌按六档梯队插进去）</h3>
+<p>道牌<b>不再是"谁先出谁先算"</b>。每张道牌带一个 <b>order（可以是小数）</b>，<b>越小越优先</b>。
+整数部分是档位（①–⑥），小数部分是档内顺序——留小数是为了以后往中间插新牌不用重排整张表。</p>
+<ol>
+  <li><b>档 ① 改写出牌本身</b>：<b>溯流光 1.1</b>（揭示后可以在能量上限内重出一次）→ 锁灵符 1.2 → 偷天换日 1.3。</li>
+  <li><b>档 ② 能量 / 血量直接变化</b>：回春 2.1 → 献祭 2.2。</li>
+  <li><b>档 ③ 改本次出牌的数值</b>：太虚护心镜 3.1（防御 +0.5）→ 赤霄剑 3.2 → 罡风靴 3.3 → 紫气玉佩 3.4 → <b>引雷 3.5</b>（全场攻击 +3，等价于所有人防御 −3，且不提升任何人的防御阈值）→ 破防 3.6 → 倍蓄 3.7。</li>
+  <li>算所有攻击的<b>最终数值</b>（先加算、后乘算、再减守方修正），得出每个人的<b>真实攻击值 / 防御值</b>。</li>
+  <li>定<b>胜者线</b> = 全场最高数值（自爆不算在内）。</li>
+  <li><b>御</b>：攻击值 &gt; 防御值才<b>造成有效伤害</b>，扣 1 血（<b>相等算挡住</b>；一回合基础伤害封顶 1 血）。</li>
+  <li><b>攻</b>：低于胜者线的攻击者，<b>判定失败</b>各扣 1 血。但<b>这 1 滴和上一步的「命中」共用同一个 1 血额度</b>——出攻击的人防御恒为 0，必然已经在上一步被打了，所以正常情况下不会再扣第二次，日志里写「判定失败（已计入命中）」。</li>
+  <li><b>自爆</b>：按自身血量扣血，使用者淘汰。</li>
+  <li><b>档 ④ 判定后才触发</b>：聚灵玉环 4.1（有效伤害回能量）→ 洞玄冠 4.2（额外扣 0.5）→ 泣血珠 4.3（回 0.5 血）→ 逆鳞金甲 4.4（反伤 0.5）→ <b>替罪 4.9</b>。<b>替罪压在本档最后</b>，把已经算出来的负面状态整包转移给别人。</li>
+  <li>被动效果（装备、身世触发）统一结算一轮。</li>
+  <li><b>档 ⑤ 另开博弈画面</b>：收割 5.1 → 移魂术 5.2 → 囚徒 5.3 → 狭路相逢 5.4。</li>
+  <li><b>档 ⑥ 后续回合生效</b>：往生咒 6.1 → 窃取 6.2 → 借刀杀人 6.3 → 焚术 6.4 → 终焉之奏 6.5 → 天下大白 6.6 → 窥天 6.7 → 天命轮转 6.8 → 枪打出头鸟 6.9 → 铁索连环 6.91。本回合不影响结算，但画面上会给出醒目提示。</li>
+  <li><b>被动（不占档位）</b>：替身玉符（死亡即复活到 2 血）、无懈可击（道牌目标指向你 → 对你无效；缺了你那张牌就运作不了 → <b>整张彻底无效</b>）。</li>
+  <li>淘汰者结算，<b>能量被瓜分</b>。</li>
+  <li><b>弃牌判断 / 弃置道牌</b>：手牌超过血量上限的人自己挑牌弃掉。<b>弃置在回合最末，是"这回合结束了"的标志。</b></li>
+</ol>
+<div class="tipbox" style="margin-top:12px">
+<b>三张牌这次改了：</b>「太虚护心镜」从"受击数值 −0.5"改成 <b>防御数值 +0.5</b>；「倍蓄」明确 <b>蓄力被打中则本回合一点能量都拿不到</b>（未蓄力才改为 +1 能量）；
+新增神策牌 <b>「溯流光」</b>——揭示后可以重新出一次牌，但<b>消耗的能量必须 ≤ 你一开始出那张术的消耗</b>，不能借机升档。
+</div>
+<div class="warnbox" style="margin-top:12px">
+<b>数值口径一句话：</b><b>只有御术给防御</b>；蓄力和攻击时防御<b>都是 0</b>（可被道牌 / 天机抬起来）。所以<b>「同数值的人互不相伤」不是靠防御打平</b>，而是靠<b>胜者线并列跳过</b>——并列最高的那一批人不参与受击判定。<b>攻击 &gt; 防御才算打中，相等算挡住。</b>
+<b>术牌本身造成的基础扣血恒为 1</b>——多人打中你也只掉 1 血，只有那张牌<b>自带其他效果</b>（额外扣半滴、扣能量、扣上限）才往上叠。
+</div>
+
+<h2><span class="num">05</span>血是怎么掉的：三个扣血来源</h2>
+
+<h3>① 被命中 −1</h3>
+<p>你的阈值挡不住胜者线，就掉 1 点血。<b>不管对方用的是 2 阶还是 14 阶。</b></p>
+<p><b>而且一回合只掉这 1 点。</b>哪怕三四个人同时够得到你、或者反弹也打中你，<b>基础伤害都只结算一次</b>；叠在上面的额外效果（增伤多扣半滴、吸你能量）才照常累加。所以「被围攻」可怕在附加效果和后续回合，不在一次翻倍。</p>
+
+<h3>② 判定失败 −1</h3>
+<p>你出了攻击，但数值<b>低于</b>全场最高——说明你这一手押错了，扣 1 点血。<b>注意它会和「被命中」叠加</b>：一个数值垫底的攻击者，既挨了胜者线的一刀，又吃了判定失败，<b>一回合掉 2 点</b>。第 1 局只有 3 血，这基本是致命的。</p>
+
+<h3>③ 自爆</h3>
+<p>唯一按数值扣血的例外，且需要你先把自己送走。</p>
+
+<div class="demo">
+  <div class="demo-hd"><b>示例回合</b> · 4 人局第 1 局（3 血），甲 / 乙 / 丙 / 丁 互不同势力</div>
+  <table class="demo-tb">
+    <thead><tr><th style="width:64px">人</th><th style="width:150px">出牌</th><th style="width:70px">耗能</th><th style="width:90px">数值/阈值</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>甲</td><td>二阶攻击</td><td class="num-c">2</td><td class="num-c">攻 2</td><td><b>胜者线 = 2</b>，本人不掉血</td></tr>
+      <tr><td>乙</td><td>进阶防御</td><td class="num-c">1</td><td class="num-c">阈 7</td><td>7 ≥ 2 → <b>挡住</b>，不掉血</td></tr>
+      <tr><td>丙</td><td>蓄力</td><td class="num-c">0</td><td class="num-c">阈 0</td><td>被命中 <b>−1</b>（本回合蓄力作废）</td></tr>
+      <tr><td>丁</td><td>一阶普攻</td><td class="num-c">1</td><td class="num-c">攻 1</td><td>被命中 <b>−1</b>；1 &lt; 2 判定失败再 <b>−1</b> → <b>共 −2</b></td></tr>
+    </tbody>
+  </table>
+  <div class="demo-out">第 1 局只有 3 血：丁 一手就从 3 掉到 1，再挨一刀就出局。<b>这就是"低数值攻击 + 不防御"的代价。</b></div>
+</div>
+
+<h3>并列最高怎么办</h3>
+<p>如果多人打出了<b>相同的最高数值</b>，规则是：<b>并列者之间互不相伤，但胜者线照常成立。</b></p>
+<div class="demo">
+  <div class="demo-hd"><b>示例</b> · 甲、丁 都是「一阶普攻」(1)，丙 蓄力</div>
+  <table class="demo-tb">
+    <thead><tr><th style="width:64px">人</th><th style="width:150px">出牌</th><th style="width:90px">数值</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>甲</td><td>一阶普攻</td><td class="num-c">1</td><td>并列最高 → 与丁<b>互不相伤</b>，不掉血</td></tr>
+      <tr><td>丁</td><td>一阶普攻</td><td class="num-c">1</td><td>同上，不掉血</td></tr>
+      <tr><td>丙</td><td>蓄力</td><td class="num-c">阈 0</td><td>阈值不够 → <b>被命中 −1</b></td></tr>
+    </tbody>
+  </table>
+  <div class="demo-out"><b>常见误解：</b>"并列 = 本次攻击全部作废，全场免伤"。<b>不是。</b>并列只保护并列者彼此；没防御、阈值低的人照样挨打。</div>
+</div>
+
+<h2><span class="num">06</span>能量：你的生命线</h2>
+<p>初始 0 能量。所有术都要花能量（除了蓄力、普通防御、自爆）。收入来源：</p>
+<table>
+  <thead><tr><th style="width:150px">来源</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr class="hl"><td><b>蓄力</b></td><td>每次 +1。<b>本回合被命中就拿不到</b>——所以蓄力的人其实在裸奔。</td></tr>
+    <tr><td>补给</td><td>第 10 / 15 / 20… 回合，全场 +1。</td></tr>
+    <tr><td>击杀瓜分</td><td>有人被淘汰时，他身上的能量由<b>造成过伤害者所在势力</b>均分。</td></tr>
+    <tr><td>道牌 / 术效果</td><td>例如「聚灵玉环」每次有效伤害回 1 能量。</td></tr>
+    <tr><td>平民子弟</td><td>1 血 ↔ 2 能量即时兑换。<b>可以反复换</b>：先把血换成能量打一套大的，
+      或者反过来把能量补回血撑过这一回合。</td></tr>
+  </tbody>
+</table>
+<div class="tipbox">
+<b>新手最常见的死法：</b>前几回合疯狂蓄力攒能量，然后一次性打一发大的——结果那发被人防御挡住，既没造成命中，也没吃到蓄力（被命中了），能量还全花光了。<b>蓄力要在"大概率不会被命中"的时机蓄</b>，比如场上多人出过防御、或你是唯一血量健康的人时。
+</div>
+
+<h2><span class="num">07</span>天机：每回合都可能改写局势</h2>
+<p>每回合先判天机：<b>前三局 20%</b>，<b>终局期 30%</b>；连续 5 回合没出，第 6 回合<b>必出</b>（保底）。24 种，效果五花八门——全场回血、全场掉血、攻击 +N、能量重分配、禁止防御……没触发就明写<b>「天机平稳」</b>。</p>
+<ul>
+  <li>天机效果显示在<b>中央天机坛</b>，点开可以看全文；<b>持续多回合的效果</b>会一直列在下面，别忽略。</li>
+  <li>部分天机需要<b>当场表态</b>（例如「天之赌场」——每人自选押多少能量，0 = 弃权，押最高者拿走一半，其余人平分另一半；「赊天」——见下面那条）。这类会弹出选择框，超时按保守值处理。</li>
+  <li><b>「窥天」可以抢天机</b>：本回合打出后挂起，<b>下一次天机正式执行之前</b>，你可以把这道天机<b>某个人的那一份</b>摘下来、挂到另一个人身上——
+      <b>被搬走的人完全不受影响，被嫁接的人吃到两份</b>。<br>
+      <b>全场类天机也能这样改</b>：比如「焚天」全员 −1 血，把 A 那份挂到 B 身上之后，结果是 <b>B 扣 2 血、A 扣 0 血、其余人各扣 1 血</b>。这是窥天最狠的用法。<br>
+      落在一个具体人身上的天机（天罚、生死劫这类）则是直接<b>换目标</b>。全体状态改写类（阴阳倒转、命运乖离）和全场 buff <b>不能嫁接</b>。</li>
+  <li><b>「天命轮转」= 下回合必定动荡</b>：打出后下一回合跳过概率判定，直接抽一张天机牌生效。因为它在本回合不影响任何事，所以<b>看得见、也接得住</b>。</li>
+</ul>
+<div class="warnbox">
+<b>「引雷」是新手杀手：</b>它的效果是<b>本回合所有攻击数值 +3</b>，<b>不提升任何人的防御阈值</b>。也就是说原本挡得住的 3 / 4 级防御会被 5 / 7 破掉——而且<b>打出引雷的人自己也要承担后果</b>，你没自备防御就一样挨刀。「引雷 + 蓄力」是自杀式打法。
+</div>
+
+<h2><span class="num">08</span>拍卖：第 5 / 10 / 15… 回合</h2>
+<p>第 <b>5 / 10 / 15…</b> 回合<b>开始时</b>拍出一张道牌，是这些回合的第一个环节（不是第 6 回合开头）。</p>
+<p>所有人<b>用自己当前的能量</b>出价，价高者得、<b>只付自己的报价</b>：</p>
+<ul>
+  <li><b>只能按整点出价。</b>上限 = 你当前能量向下取整（比如 3.5 点最多出 3 点），剩下不到 1 点的零头留在手里，出不了价。</li>
+  <li><b>没拍到的人一分能量都不扣。</b>流拍、出价低、并列出局、库存不足被挤掉——统统不付钱，只有真正拿到牌的人付款。</li>
+  <li><b>它排在天机判定之前</b>——先拍完再定天机。这个顺序是有意的：出价时你的能量还没被本回合的出牌花掉，买得起的东西比放在回合末更多。</li>
+  <li>并列的处理和攻击完全不同：<b>最高价并列且并列人数 ≥3</b> → 并列者各付各价、各得 1 张；<b>两人同价或全场没人出价</b> → 流拍。</li>
+  <li>第 5 回合和第 15 回合的购买力差异是设计的一部分——<b>省能量不只是为了出术，也是为了抢牌</b>。</li>
+</ul>
+
+<h2><span class="num">09</span>术集：越活越强的滚雪球</h2>
+<p>全场 12 套术（天马、游龙、兵将、山海、道士、北冥、明镜、太极、人道、妖道、鬼道、物道）。<b>开局一套都没有</b>，
+每局末从<b>本局争夺的那一批</b>里挑 1 套，<b>一个势力最多持有 3 套</b>；重复或超上限则折算成 2 能量。</p>
+<h3>局末轮抽：活得越久越先挑</h3>
+<p>轮到谁<b>看存活长短</b>，不看名次分：</p>
+<ul>
+  <li><b>活到最后 → 最先挑</b>；<b>出局越早 → 排得越后</b>（死在第 3 回合的排在死在第 7 回合的后面）；</li>
+  <li>存活时长完全相同的势力之间<b>随机</b>定先后（不按座位序，避免固定优势）；</li>
+  <li>轮到你时中央会弹出<b>轮抽卡</b>：顺位、每家挑了什么、池子还剩哪几套；</li>
+  <li>每家有 <b>12 秒</b>决定，超时自动随机挑一套（不会让你一个人卡住全场）。</li>
+</ul>
+<h3>谁替你挑？—— 由「最后被淘汰的人」决定</h3>
+<ul>
+  <li>2 人同盟里，两人的存活时长常常不同：<b>由死得更晚的那位</b>来挑（死得最晚 = 打得最好，也最了解战局）；</li>
+  <li>两人<b>同时</b>被淘汰（存活回合数相同）→ 在他们之间<b>随机</b>挑一位当代表；</li>
+  <li>不是代表的那位只能<b>看着</b>，不能替他决定（界面上会写"本局由队里最后被淘汰的 X 决定"）；</li>
+  <li>多个势力<b>同时</b>被淘汰 → 这一批次内部<b>随机</b>决定谁先挑。</li>
+</ul>
+<p class="cm">设计意图：术集是滚雪球资源，<b>打得好的队应该更早拿到火力</b>——"死得早"本身已经是结果，
+再给它优先挑反而会削平差距。顺位将来还会综合<b>击杀数、造成伤害、存活排序</b>算权重，现在的"存活长度"只是简化版。</p>
+<p>术集<b>归势力所有、队内共享</b>（2 人同盟共用同一批 3 套）。所以排名靠前不只是加分，更是<b>拿到了下一局的火力</b>——这就是"活到最后"滚雪球的方式。</p>
+<table>
+  <thead><tr><th style="width:110px">术集</th><th>风格</th></tr></thead>
+  <tbody>
+    <tr><td>天马 / 游龙</td><td>同构的攻防均衡套，都有 0 能量的免费盾。<span class="tag grey">新手友好</span></td></tr>
+    <tr><td>兵将</td><td>唯一没有 0 能量防御的套系；换来四阶及以上攻击<b>耗能减半</b>。<span class="tag grey">进攻型</span></td></tr>
+    <tr><td>山海</td><td>数值偏高；「山海有灵」是 ∞ 阈值，但<b>最终数值 &lt; 2 就能被破</b>（一阶普攻专治）。</td></tr>
+    <tr><td>道士 / 北冥 / 明镜 / 太极</td><td>特殊机制向：封印、复制、反弹、克隆。<b>第 2 局起登场</b>。</td></tr>
+    <tr><td>人道 / 妖道 / 鬼道 / 物道</td><td>一/二/三阶递进的专线套系。</td></tr>
+  </tbody>
+</table>
+
+<h3>「赊天」怎么算（R75）</h3>
+<ul>
+  <li><b>会弹框</b>：抽取到赊天时，每个存活玩家各收到一次赊借选择框，<b>选项就是数字 0/1/2…</b>，
+      <b>0 表示不借</b>。这是出牌<b>之前</b>的窗口（和天之赌场同一个阶段），有 12 秒，超时按 0（不借）处理。</li>
+  <li><b>能借多少</b>：额度 = <b>你拥有的道牌数</b>（手上的道牌 + 已装载的神装，两者都算道牌）。
+      <b>1 张道牌 = 1 点</b>。一回合内道牌越多，能借的越多。</li>
+  <li><b>淘汰时怎么清算</b>（按顺序）：
+    <b>① 先用你剩余的能量还</b>；<b>② 不够，每缺 1 点随机失去 1 张道牌</b>（先手牌，再神装）；
+    <b>③ 还不够就继续欠着</b>——欠账<b>跨局保留</b>，之后你每次获得道牌（抽牌、拍卖）会被天道<b>直接没收</b>抵债。
+    <br><span class="cm">被债主先吃掉的那部分能量，击杀者就分不到了——所以借得多的人，被击杀时的"油水"可能很少。</span></li>
+  <li><b>谁不用还</b>：<b>活到最后的那个人</b>（胜利势力的存活成员）——局末豁免，一笔勾销。
+    <b>但已经淘汰的队友照样要还</b>：他们在倒下那一刻就已经清算过了，不会因为势力后来赢了而退回。</li>
+  <li><b>没有"回合即将结束"的检查</b>：借的时候不会预判你还要活多久。你可以在残局孤注一掷借满——赢了全免，输了拿命和牌还。</li>
+</ul>
+
+<h2><span class="num">10</span>同盟模式（2 人一势力）</h2>
+<p>房主可以设 2–4 个势力、每势力 1–2 人（合法人数 2/3/4/6/8）。同势力时：</p>
+<ul>
+  <li><b>术集共享</b>，局末每势力只挑 1 套，队内共用。</li>
+  <li><b>积分共享</b>，队友同分。</li>
+  <li><b>存活 = 最后一名成员倒下</b>才算势力灭亡，所以队友倒下不等于出局结束。</li>
+  <li><b>击杀能量由造成伤害者所在势力的全体成员均分。</b></li>
+  <li>攻击<b>不会打到队友</b>（同势力免伤）——唯一例外是「借刀杀人」造成的强制攻击，它对被强制者<b>自己的队友照常生效</b>。</li>
+  <li><b>但「判定失败」不豁免队友</b>：队友打出更高数值，同样会让你判定失败扣 1 血。配合失误是要付代价的。</li>
+</ul>
+
+<h2><span class="num">11</span>五个新手常踩的坑</h2>
+<table>
+  <thead><tr><th style="width:190px">坑</th><th>真相</th></tr></thead>
+  <tbody>
+    <tr class="hl"><td>「我打 14 阶，能秒他」</td><td>命中<b>只扣 1 点血</b>，跟数值无关。14 阶的意义是"保证破防"，代价是 14 能量。</td></tr>
+    <tr class="hl"><td>「蓄力最安全」</td><td>蓄力时<b>没有防御、阈值视为 0</b>，胜者线一旦成立你就是最软的目标，而且被命中还拿不到能量。</td></tr>
+    <tr><td>「出个小攻击试试水」</td><td>低于最高值 → <b>判定失败 −1</b>；同时你没防御 → <b>被命中 −1</b>。小攻击经常是 −2。</td></tr>
+    <tr><td>「超阶防御 12，稳了」</td><td>被 <b>1 点的一阶普攻</b>击破。同理「山海有灵」也被它破。</td></tr>
+    <tr><td>「并列了，这回合没事」</td><td>只保护并列者。<b>你没防御，照样挨刀。</b></td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">12</span>界面速查</h2>
+<table>
+  <thead><tr><th style="width:150px">动作</th><th style="width:120px">电脑</th><th>手机</th></tr></thead>
+  <tbody>
+    <tr><td>看牌的详情</td><td>鼠标<b>悬浮</b></td><td><b>长按</b></td></tr>
+    <tr><td>看天机全文 / 身世 / 术集内容</td><td colspan="2">点一下，弹窗展示</td></tr>
+    <tr><td>展开 / 收起术系分组</td><td colspan="2">点分组标题（如「攻击」「天马」）</td></tr>
+    <tr><td>展开 / 收起事件记录表</td><td colspan="2">右上角「事件 / 收起」按钮；展开时主画面自动变窄</td></tr>
+    <tr><td>选牌并确认出牌</td><td colspan="2">点术 → 点「确认」；可同时带 1 张道牌</td></tr>
+  </tbody>
+</table>
+<div class="tipbox">
+<b>手机请横屏玩。</b>竖屏会提示旋转——牌桌是按横向排布的，竖着看会被压扁。
+</div>
+
+<h2><span class="num">13</span>术语表</h2>
+<table>
+  <thead><tr><th style="width:120px">词</th><th>意思</th></tr></thead>
+  <tbody>
+    <tr><td>胜者线</td><td>本回合全场最高的攻击最终数值。低于它 → 判定失败扣 1 血。</td></tr>
+    <tr><td>阈值</td><td>防御术给你的抵挡数值。攻击数值 &gt; 阈值才算破（相等算挡住）。</td></tr>
+    <tr><td>判定失败</td><td>你出的攻击数值低于胜者线，扣 1 血。</td></tr>
+    <tr><td>术 / 道牌</td><td>术 = 每回合暗选打出的牌；道牌 = 手牌资源（装备或即时）。</td></tr>
+    <tr><td>术集</td><td>12 套进阶术，局末按排名挑选，势力共享，上限 3 套。</td></tr>
+    <tr><td>势力</td><td>同盟单位。共享术集与积分，攻击不打队友。</td></tr>
+    <tr><td>天机</td><td>每回合先判定的全局事件，24 种。前三局 20%、终局 30%，连续 5 回合没出则第 6 回合必出。</td></tr>
+    <tr><td>order</td><td>道牌的生效顺序值，可以是小数。整数部分 = 档位（①–⑥），越小越优先；判定与扣血在 ③ 与 ④ 之间。</td></tr>
+    <tr><td>溯流光</td><td>揭示后可以重新出一次牌，但消耗的能量必须 ≤ 首出那张术的消耗。</td></tr>
+    <tr><td>瓜分</td><td>有人被淘汰时，他的能量分给造成过伤害者所在的势力。</td></tr>
+  </tbody>
+</table>
+
+<footer>
+  依据：《行道》完整规则书 v1.4 · 规则裁决与实现口径 v1.4（R01–R57）。<br>
+  规则以口径文档为准；本教程只讲玩法，不含实现细节。<br>
+  《行道》新手教程 · 2026-10-21
+</footer>
+
+</div>
+</body>
+</html>

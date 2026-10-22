@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f7f3ea">
+<title>行道 · 联机对局</title>
+<link rel="stylesheet" href="./style.css">
+<style>
+  /* 手机上房号比"局/回合"重要，只留房号与倒计时 */
+  @media (max-width:820px){
+    header .meta{display:flex;gap:10px;font-size:11.5px}
+    header .meta span:nth-child(2),header .meta span:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">行<em>道</em><small>联机</small></div>
+    <div class="meta">
+      <span>房号 <b id="m-room">—</b></span>
+      <span>局 <b id="m-round">—</b>/4</span>
+      <span>回合 <b id="m-turn">—</b></span>
+      <span>天机 <b class="tj" id="m-tianji">—</b></span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn only-narrow" id="btn-panel">事件</button>
+    <span class="timer" id="m-timer"></span>
+    <button class="btn" id="btn-tutorial">教程</button>
+    <a class="btn" href="./index.html" style="text-decoration:none">单机版</a>
+    <button class="btn" id="btn-dissolve" style="display:none">解散房间</button>
+    <button class="btn" id="btn-leave">退出</button>
+  </header>
+
+  <!-- 大厅 -->
+  <div class="lobby" id="lobby">
+    <div class="center" id="lobby-home">
+      <h2 style="font-family:'Songti SC',serif;margin:0">行道 · 联机</h2>
+      <div style="color:var(--ink3);font-size:12px;text-align:center;line-height:1.9">
+        开一间房，把房号或邀请链接发给朋友；空位可以补人机。<br>
+        2–4 个势力、每势力 1–2 人，支持 2/3/4/6/8 人；<br>
+        每回合 45 秒暗选出牌，超时自动转「进阶防御」。
+      </div>
+      <div class="joinrow">
+        <input id="in-name" class="name" placeholder="你的名字" maxlength="12">
+      </div>
+      <div class="joinrow">
+        <button class="btn primary" id="btn-create">创建房间</button>
+      </div>
+      <div class="joinrow">
+        <input id="in-room" placeholder="6 位房号" maxlength="6" inputmode="numeric">
+        <button class="btn" id="btn-join">加入</button>
+      </div>
+      <div id="recent-box" style="display:none"></div>
+    </div>
+    <div class="lobby-wrap" id="lobby-room" style="display:none"></div>
+  </div>
+
+  <!-- 牌桌 -->
+  <div class="body" id="table" style="display:none">
+    <div class="play">
+      <div class="board" id="board">
+        <div class="zone zone-n" data-side="n"></div>
+        <div class="zone zone-w" data-side="w"></div>
+        <div class="tcenter" data-center></div>
+        <div class="zone zone-e" data-side="e"></div>
+        <div class="zone zone-s" data-side="s"></div>
+      </div>
+      <div class="tray">
+        <div class="row">
+          <div class="lab">术</div>
+          <div class="hand" id="hand-shu"></div>
+        </div>
+        <div class="row" id="row-dao" style="margin-top:5px">
+          <div class="lab">道</div>
+          <div class="hand" id="hand-dao"></div>
+        </div>
+        <div class="row" id="row-talent" style="margin-top:5px;display:none">
+          <div class="lab">天赋</div>
+          <div class="hand" id="hand-talent"></div>
+        </div>
+        <div class="tray-acts" id="tray-actions"></div>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel">
+      <div class="panel-hd">
+        <span class="panel-title">事件记录</span>
+        <span class="panel-vert">事件记录</span>
+        <div class="spacer"></div>
+        <button class="btn" id="panel-toggle" style="padding:2px 8px;font-size:11px">收起</button>
+      </div>
+      <div class="panel-body"></div>
+    </aside>
+  </div>
+</div>
+
+<!-- 手机竖屏：请横过来 -->
+<div class="rotate">
+  <div class="rot-ic">▭</div>
+  <div style="font-size:15px;font-weight:600">请横屏使用</div>
+  <div style="font-size:12px;color:var(--ink3);text-align:center;line-height:1.8">
+    行道是四人围坐的牌桌，横屏才放得下四条边。<br>转过手机即可继续。
+  </div>
+</div>
+
+<pre id="errbox" style="display:none;position:fixed;left:10px;right:10px;bottom:10px;z-index:99;
+  background:#7a1f18;color:#ffe9e6;padding:10px 12px;border-radius:8px;font-size:11px;
+  white-space:pre-wrap;max-height:40vh;overflow:auto;margin:0"></pre>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="banner" id="banner"></div>
+
+<script>
+  window.addEventListener("error", function (e) {
+    var box = document.getElementById("errbox");
+    if (!box) return;
+    box.style.display = "block";
+    box.textContent = "脚本错误：" + (e.message || e.type) + "\n" + (e.filename || "") + ":" + (e.lineno || "");
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var box = document.getElementById("errbox");
+    if (!box) return;
+    box.style.display = "block";
+    box.textContent = "未捕获异常：" + ((e.reason && (e.reason.message || e.reason)) || "");
+  });
+</script>
+<script src="./data.bundle.js"></script>
+<script type="module" src="./online.mjs"></script>
+
+  <!-- 站内教程：iframe 隔离，点「教程」才加载 -->
+  <div class="doc-overlay" id="doc-overlay" aria-hidden="true">
+    <div class="doc-shell">
+      <div class="doc-bar">
+        <span class="doc-title">玩家教程</span>
+        <span class="doc-hint">Esc 或点空白处关闭</span>
+        <button class="btn" id="doc-close">关闭</button>
+      </div>
+      <iframe id="doc-frame" title="玩家教程" src="about:blank"></iframe>
+    </div>
+  </div>
+  <script src="./docview.js"></script>
+</body>
+</html>

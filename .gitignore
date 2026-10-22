@@ -1,0 +1,17 @@
+# 依赖与产物
+node_modules/
+*.log
+
+# 编辑器 / 系统
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
+
+# 运行时数据
+shots/
+*.tmp
+
+# 本地环境
+.env
+.env.*
